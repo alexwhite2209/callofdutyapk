@@ -25,9 +25,28 @@ for attempt in 1 2 3 4 5; do
 done
 
 AAB=$(find "$APP/app/build/outputs/bundle/debug" -name '*.aab' | head -1)
-JAR=$ROOT/bundletool-$BUNDLETOOL_VER.jar
-[ -f "$JAR" ] || curl -fL -o "$JAR" "https://maven.google.com/com/android/tools/build/bundletool/$BUNDLETOOL_VER/bundletool-$BUNDLETOOL_VER.jar"
 
-java -jar "$JAR" build-apks --bundle="$AAB" --output="$ROOT/CoD4-Winlator.apks" --overwrite \
-  --ks="$HOME/.android/debug.keystore" --ks-pass=pass:android --ks-key-alias=androiddebugkey --key-pass=pass:android
+# bundletool from Maven is a library jar (no Main-Class), so resolve it with its dependencies and run BundleToolMain
+BT=$ROOT/.bundletool
+if [ ! -d "$BT/libs" ]; then
+  mkdir -p "$BT"
+  cat > "$BT/build.gradle" <<GRADLE
+plugins { id 'base' }
+repositories { google(); maven { url 'https://maven-central.storage-download.googleapis.com/maven2/' }; mavenCentral() }
+configurations { bt }
+dependencies { bt 'com.android.tools.build:bundletool:$BUNDLETOOL_VER' }
+tasks.register('copyDeps', Copy) { from configurations.bt; into 'libs' }
+GRADLE
+  echo "rootProject.name='bt'" > "$BT/settings.gradle"
+  (cd "$BT" && gradle -q --no-daemon copyDeps)
+fi
+
+KS=$ROOT/cod4.keystore
+[ -f "$KS" ] || keytool -genkeypair -keystore "$KS" -storepass android -keypass android -alias cod4 \
+  -keyalg RSA -keysize 2048 -validity 10000 -dname "CN=CoD4 Winlator"
+
+java -cp "$BT/libs/*" com.android.tools.build.bundletool.BundleToolMain build-apks \
+  --aapt2="$(ls -d "$ANDROID_HOME"/build-tools/*/ | tail -1)aapt2" \
+  --bundle="$AAB" --output="$ROOT/CoD4-Winlator.apks" --overwrite \
+  --ks="$KS" --ks-pass=pass:android --ks-key-alias=cod4 --key-pass=pass:android
 echo "Готово: $ROOT/CoD4-Winlator.apks"

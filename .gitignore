@@ -17,3 +17,5 @@ local.properties*.apks
 bundletool-*.jar
 android-sdk/
 local.properties
+.bundletool/
+*.keystore
