@@ -16,7 +16,13 @@ yes 2>/dev/null | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --licenses
 "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "platforms;android-35" "build-tools;34.0.0" "ndk;24.0.8215888" "cmake;3.22.1"
 
 echo "sdk.dir=$ANDROID_HOME" > "$APP/local.properties"
-(cd "$APP" && chmod +x gradlew && ./gradlew --no-daemon bundleDebug)
+chmod +x "$APP/gradlew"
+# Maven Central may answer 429 (rate limit); downloaded artifacts are cached, so retry with backoff
+for attempt in 1 2 3 4 5; do
+  (cd "$APP" && ./gradlew --no-daemon bundleDebug) && break
+  [ $attempt -eq 5 ] && exit 1
+  sleep $((attempt * 30))
+done
 
 AAB=$(find "$APP/app/build/outputs/bundle/debug" -name '*.aab' | head -1)
 JAR=$ROOT/bundletool-$BUNDLETOOL_VER.jar
