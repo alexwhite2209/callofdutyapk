@@ -6,7 +6,9 @@ import com.winlator.box64.Box64Preset;
 import com.winlator.container.Container;
 import com.winlator.container.ContainerManager;
 import com.winlator.container.DXWrappers;
+import com.winlator.container.GraphicsDrivers;
 import com.winlator.container.Shortcut;
+import com.winlator.core.DefaultVersion;
 import com.winlator.core.KeyValueSet;
 import com.winlator.widget.FrameRating;
 
@@ -18,9 +20,14 @@ public class GameSettings {
     public static final int QUALITY_FAST = 0;
     public static final int QUALITY_BALANCED = 1;
     public static final int QUALITY_BEAUTIFUL = 2;
+    /** Graphics variants the player can cycle through when the game shows a black screen. */
+    public static final int GRAPHICS_DEFAULT = 0;
+    public static final int GRAPHICS_OTHER_DXVK = 1;
+    public static final int GRAPHICS_SYSTEM_DRIVER = 2;
+    public static final int GRAPHICS_COMPATIBLE = 3;
     public static final int TOUCH_CONTROLS_PROFILE_ID = 4; // built-in "FPS" profile
     /** Bump when the mapping to emulator options changes, so existing installs get re-applied on update. */
-    public static final String VERSION = "4";
+    public static final String VERSION = "5";
     /** Balanced: no shadows, glow or dynamic lights. */
     private static final String BALANCED_GRAPHICS_ARGS = "+set sm_enable 0 +set r_glow_allowed 0 +set r_glow 0 +set r_dlightLimit 0";
     /** Minimum: on top of balanced, lowest textures, no specular, water, decals or clouds, aggressive model LOD. */
@@ -35,7 +42,7 @@ public class GameSettings {
     public boolean fullscreen;
     public boolean showFPS;
     public boolean touchControls;
-    public boolean compatibleGraphics;
+    public int graphicsVariant;
 
     public static GameSettings recommended(DeviceProfile profile) {
         GameSettings settings = new GameSettings();
@@ -57,16 +64,18 @@ public class GameSettings {
         settings.fullscreen = container.getExtra("gsFullscreen", "1").equals("1");
         settings.showFPS = container.getExtra("gsShowFPS").equals("1");
         settings.touchControls = container.getExtra("gsTouchControls", "1").equals("1");
-        settings.compatibleGraphics = container.getExtra("gsCompatibleGraphics").equals("1");
+        String variant = container.getExtra("gsGraphicsVariant");
+        if (!variant.isEmpty()) settings.graphicsVariant = Integer.parseInt(variant);
+        else settings.graphicsVariant = container.getExtra("gsCompatibleGraphics").equals("1") ? GRAPHICS_COMPATIBLE : GRAPHICS_DEFAULT;
         return settings;
     }
 
     public void apply(Context context, Container container, DeviceProfile profile) {
         String screenSize = profile.getScreenSize();
         container.setScreenSize(screenSize);
-        container.setGraphicsDriver(profile.getGraphicsDriver());
+        container.setGraphicsDriver(graphicsVariant == GRAPHICS_SYSTEM_DRIVER ? GraphicsDrivers.VORTEK+","+GraphicsDrivers.DEFAULT_OPENGL_DRIVER : profile.getGraphicsDriver());
 
-        if (compatibleGraphics) {
+        if (graphicsVariant == GRAPHICS_COMPATIBLE) {
             // WineD3D renders through OpenGL; slower, but works when DXVK shows a black screen
             container.setDXWrapper(DXWrappers.WINED3D);
             container.setDXWrapperConfig("");
@@ -74,7 +83,10 @@ public class GameSettings {
         else {
             container.setDXWrapper(DXWrappers.DXVK);
             KeyValueSet dxvkConfig = new KeyValueSet();
-            dxvkConfig.put("version", profile.getDXVKVersion());
+            String dxvkVersion = profile.getDXVKVersion();
+            if (graphicsVariant == GRAPHICS_OTHER_DXVK) dxvkVersion = dxvkVersion.equals(DefaultVersion.MINOR_DXVK) ? DefaultVersion.MAJOR_DXVK : DefaultVersion.MINOR_DXVK;
+            else if (graphicsVariant == GRAPHICS_SYSTEM_DRIVER) dxvkVersion = DefaultVersion.MINOR_DXVK;
+            dxvkConfig.put("version", dxvkVersion);
             dxvkConfig.put("framerate", String.valueOf(fps));
             dxvkConfig.put("maxDeviceMemory", profile.getVideoMemory());
             container.setDXWrapperConfig(dxvkConfig.toString());
@@ -90,7 +102,8 @@ public class GameSettings {
         container.putExtra("gsFullscreen", fullscreen ? "1" : "0");
         container.putExtra("gsShowFPS", showFPS ? "1" : "0");
         container.putExtra("gsTouchControls", touchControls ? "1" : "0");
-        container.putExtra("gsCompatibleGraphics", compatibleGraphics ? "1" : "0");
+        container.putExtra("gsGraphicsVariant", String.valueOf(graphicsVariant));
+        container.putExtra("gsCompatibleGraphics", null);
         container.saveData();
 
         for (Shortcut shortcut : new ContainerManager(context).loadShortcuts(null)) {

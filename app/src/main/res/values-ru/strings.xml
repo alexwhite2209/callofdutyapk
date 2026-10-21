@@ -321,7 +321,11 @@
     <string name="gs_touch_controls">Кнопки на экране (выключите, если играете с геймпадом)</string>
     <string name="gs_fullscreen">Растянуть игру на весь экран</string>
     <string name="gs_fewer_crashes">Меньше вылетов (игра чуть медленнее; включите, если игра закрывается сама)</string>
-    <string name="gs_compatible_graphics">Совместимая графика (включите, если после заставки чёрный экран; игра будет медленнее)</string>
+    <string name="gs_graphics">Если чёрный экран — выберите другой вариант</string>
+    <string name="gs_graphics_1">Вариант 1 — обычный (рекомендуем)</string>
+    <string name="gs_graphics_2">Вариант 2 — другая версия графики</string>
+    <string name="gs_graphics_3">Вариант 3 — родной драйвер телефона</string>
+    <string name="gs_graphics_4">Вариант 4 — совместимый (медленнее)</string>
     <string name="gs_show_fps">Показывать счётчик кадров</string>
     <string name="gs_save_and_play">Сохранить и играть</string>
     <string name="gs_auto">Подобрать автоматически</string>

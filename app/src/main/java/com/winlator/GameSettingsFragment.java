@@ -25,6 +25,7 @@ import com.winlator.core.AppUtils;
 /** Simple, plain-language settings screen for Call of Duty 4 that replaces the emulator options. */
 public class GameSettingsFragment extends Fragment {
     private static final int[] QUALITY_IDS = {R.id.RBQualityFast, R.id.RBQualityBalanced, R.id.RBQualityBeautiful};
+    private static final int[] GRAPHICS_VARIANT_IDS = {R.id.RBGraphics1, R.id.RBGraphics2, R.id.RBGraphics3, R.id.RBGraphics4};
     private DeviceProfile profile;
     private Container container;
 
@@ -84,7 +85,7 @@ public class GameSettingsFragment extends Fragment {
         ((CheckBox)view.findViewById(R.id.CBFullscreen)).setChecked(settings.fullscreen);
         ((CheckBox)view.findViewById(R.id.CBFewerCrashes)).setChecked(settings.fewerCrashes);
         ((CheckBox)view.findViewById(R.id.CBShowFPS)).setChecked(settings.showFPS);
-        ((CheckBox)view.findViewById(R.id.CBCompatibleGraphics)).setChecked(settings.compatibleGraphics);
+        ((RadioGroup)view.findViewById(R.id.RGGraphics)).check(GRAPHICS_VARIANT_IDS[settings.graphicsVariant]);
     }
 
     private GameSettings readSettings(View view) {
@@ -96,7 +97,8 @@ public class GameSettingsFragment extends Fragment {
         settings.fullscreen = ((CheckBox)view.findViewById(R.id.CBFullscreen)).isChecked();
         settings.fewerCrashes = ((CheckBox)view.findViewById(R.id.CBFewerCrashes)).isChecked();
         settings.showFPS = ((CheckBox)view.findViewById(R.id.CBShowFPS)).isChecked();
-        settings.compatibleGraphics = ((CheckBox)view.findViewById(R.id.CBCompatibleGraphics)).isChecked();
+        int graphicsId = ((RadioGroup)view.findViewById(R.id.RGGraphics)).getCheckedRadioButtonId();
+        for (int i = 0; i < GRAPHICS_VARIANT_IDS.length; i++) if (GRAPHICS_VARIANT_IDS[i] == graphicsId) settings.graphicsVariant = i;
         return settings;
     }
 }

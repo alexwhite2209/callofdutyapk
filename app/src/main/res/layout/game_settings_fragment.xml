@@ -122,13 +122,6 @@
                     android:text="@string/gs_fewer_crashes" />
 
                 <CheckBox
-                    android:id="@+id/CBCompatibleGraphics"
-                    style="@style/CheckBox"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/gs_compatible_graphics" />
-
-                <CheckBox
                     android:id="@+id/CBShowFPS"
                     style="@style/CheckBox"
                     android:layout_width="match_parent"
@@ -139,6 +132,51 @@
             <TextView
                 style="@style/FieldSetLabel"
                 android:text="@string/gs_extra" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout style="@style/FieldSet">
+                <RadioGroup
+                    android:id="@+id/RGGraphics"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <RadioButton
+                        android:id="@+id/RBGraphics1"
+                        style="@style/RadioButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/gs_graphics_1" />
+
+                    <RadioButton
+                        android:id="@+id/RBGraphics2"
+                        style="@style/RadioButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/gs_graphics_2" />
+
+                    <RadioButton
+                        android:id="@+id/RBGraphics3"
+                        style="@style/RadioButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/gs_graphics_3" />
+
+                    <RadioButton
+                        android:id="@+id/RBGraphics4"
+                        style="@style/RadioButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/gs_graphics_4" />
+                </RadioGroup>
+            </LinearLayout>
+
+            <TextView
+                style="@style/FieldSetLabel"
+                android:text="@string/gs_graphics" />
         </FrameLayout>
 
         <TextView
