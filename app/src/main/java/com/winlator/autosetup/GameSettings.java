@@ -29,7 +29,7 @@ public class GameSettings {
     public static final int GRAPHICS_COMPATIBLE = 3;
     public static final int TOUCH_CONTROLS_PROFILE_ID = 4; // built-in "FPS" profile
     /** Bump when the mapping to emulator options changes, so existing installs get re-applied on update. */
-    public static final String VERSION = "6";
+    public static final String VERSION = "7";
     /** Balanced: no shadows, glow or dynamic lights. */
     private static final String BALANCED_GRAPHICS_ARGS = "+set sm_enable 0 +set r_glow_allowed 0 +set r_glow 0 +set r_dlightLimit 0";
     /** Minimum: on top of balanced, lowest textures, no specular, water, decals or clouds, aggressive model LOD. */
@@ -137,11 +137,13 @@ public class GameSettings {
 
     /**
      * Forces the game video mode to match the Wine desktop, otherwise the menu can stay black after the intro.
+     * Windowed at desktop size (Winlator stretches it): in exclusive fullscreen CoD4 minimizes when it loses focus
+     * during level load, DXVK then presents to a 160x24 minimized window and the game stays black with sound.
      * Soft particles and depth of field need an R32F "$floatz" texture that WineD3D on Adreno 6xx cannot create
      * ("Create2DTexture( $floatz ... ) failed: Invalid call"); they are also costly on low-end GPUs.
      */
     private String getLaunchArgs(String screenSize) {
-        String args = "+set logfile 2 +set r_fullscreen 1 +set r_mode "+screenSize+" +set r_displayRefresh 60 +set r_aaSamples 1 +set r_vsync 0 +set com_maxfps "+fps+
+        String args = "+set logfile 2 +set r_fullscreen 0 +set vid_xpos 0 +set vid_ypos 0 +set r_mode "+screenSize+" +set r_displayRefresh 60 +set r_aaSamples 1 +set r_vsync 0 +set com_maxfps "+fps+
             " +set r_zfeather 0 +set r_dof_enable 0 +set r_distortion 0";
         if (quality == QUALITY_FAST) args += " "+MINIMAL_GRAPHICS_ARGS;
         else if (quality == QUALITY_BALANCED) args += " "+BALANCED_GRAPHICS_ARGS;
