@@ -428,6 +428,13 @@ public class XServerDisplayActivity extends AppCompatActivity implements Navigat
         if (environment != null) environment.stopEnvironmentComponents();
 
         Intent intent = getIntent();
+        if (intent.getBooleanExtra("direct_launch", false)) {
+            // Launched from the app icon: close together with the game instead of reopening the emulator UI
+            ForegroundService.stopSession(this);
+            finishAndRemoveTask();
+            Runtime.getRuntime().exit(0);
+            return;
+        }
         if (intent.hasExtra("exec_path")) {
             AppUtils.RestartApplicationOptions options = new AppUtils.RestartApplicationOptions();
             options.containerId = container.id;

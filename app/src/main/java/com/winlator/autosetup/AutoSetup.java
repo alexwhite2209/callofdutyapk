@@ -1,5 +1,6 @@
 package com.winlator.autosetup;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.AssetFileDescriptor;
@@ -12,8 +13,10 @@ import androidx.preference.PreferenceManager;
 import com.winlator.MainActivity;
 import com.winlator.R;
 import com.winlator.ShortcutsFragment;
+import com.winlator.XServerDisplayActivity;
 import com.winlator.container.Container;
 import com.winlator.container.ContainerManager;
+import com.winlator.container.Shortcut;
 import com.winlator.contentdialog.ContentDialog;
 import com.winlator.core.AppUtils;
 import com.winlator.core.DownloadProgressDialog;
@@ -62,6 +65,7 @@ public abstract class AutoSetup {
                 GameSettings.load(existing, profile).apply(activity, existing, profile);
             }
             running.set(false);
+            if (activity.isDirectLaunch() && launchGame(activity, existing, true)) activity.finish();
             return;
         }
 
@@ -183,6 +187,22 @@ public abstract class AutoSetup {
     public static Container findContainer(Context context) {
         int id = PreferenceManager.getDefaultSharedPreferences(context).getInt(PREF_CONTAINER_ID, 0);
         return id > 0 ? new ContainerManager(context).getContainerById(id) : null;
+    }
+
+    /** Starts the single player shortcut; direct launch means the emulator UI is skipped and closes with the game. */
+    public static boolean launchGame(Activity activity, Container container, boolean directLaunch) {
+        for (Shortcut shortcut : new ContainerManager(activity).loadShortcuts(null)) {
+            if (shortcut.container.id == container.id && shortcut.name.equals(CONTAINER_NAME)) {
+                Intent intent = new Intent(activity, XServerDisplayActivity.class);
+                intent.putExtra("container_id", shortcut.container.id);
+                intent.putExtra("shortcut_path", shortcut.file.getPath());
+                intent.putExtra("direct_launch", directLaunch);
+                activity.startActivity(intent);
+                activity.overridePendingTransition(0, 0);
+                return true;
+            }
+        }
+        return false;
     }
 
     private static void createShortcut(Container container, String name, File exeFile) {

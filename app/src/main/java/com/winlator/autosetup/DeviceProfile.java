@@ -73,13 +73,9 @@ public class DeviceProfile {
         return tier == Tier.LOW ? 30 : 60;
     }
 
-    /** Standard 16:9 modes only: CoD4 shows a black menu when the desktop has a resolution it does not list. */
-    public String getScreenSize(int quality) {
-        switch (quality) {
-            case GameSettings.QUALITY_BEAUTIFUL: return "1280x720";
-            case GameSettings.QUALITY_BALANCED: return "1024x576";
-            default: return "960x540";
-        }
+    /** Standard 16:9 mode: CoD4 shows a black menu when the desktop has a resolution it does not list. */
+    public String getScreenSize() {
+        return "1280x720";
     }
 
     public String getVulkanDriver() {

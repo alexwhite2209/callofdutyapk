@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <shortcut
+        android:shortcutId="game_settings"
+        android:enabled="true"
+        android:icon="@mipmap/ic_launcher"
+        android:shortcutShortLabel="@string/gs_title"
+        android:shortcutLongLabel="@string/gs_title">
+        <intent
+            android:action="com.winlator.GAME_SETTINGS"
+            android:targetPackage="com.winlator"
+            android:targetClass="com.winlator.MainActivity" />
+    </shortcut>
+</shortcuts>

@@ -141,6 +141,12 @@
                 android:text="@string/gs_extra" />
         </FrameLayout>
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="@string/gs_settings_hint" />
+
         <Button
             android:id="@+id/BTPlay"
             style="@style/ButtonPositive"

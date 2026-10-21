@@ -307,12 +307,13 @@
     <string name="cod4_extract_failed">Не удалось распаковать архив с игрой. Проверьте свободное место (нужно ~8 ГБ) или распакуйте архив в «Загрузки/CoD4» вручную.</string>
     <string name="cod4_ready">CoD4 настроена под ваш телефон</string>
     <string name="cod4_ready_hint">Всё готово: настройки уже подобраны под ваш телефон. Нажмите на ярлык Call of Duty 4, чтобы играть. Поменять качество можно в меню «Настройки игры».</string>
+    <string name="gs_settings_hint">Игра запускается сразу с иконки приложения. Чтобы открыть эти настройки, зажмите иконку приложения и выберите «Настройки игры».</string>
     <string name="gs_title">Настройки игры</string>
     <string name="gs_your_phone">Ваш телефон</string>
     <string name="gs_quality">Качество картинки</string>
-    <string name="gs_quality_fast">Быстро — максимум скорости, картинка проще</string>
-    <string name="gs_quality_balanced">Баланс — хорошая картинка и скорость</string>
-    <string name="gs_quality_beautiful">Красиво — чёткая картинка, нужен мощный телефон</string>
+    <string name="gs_quality_fast">Минимум — самая быстрая игра: простые текстуры, без теней и эффектов</string>
+    <string name="gs_quality_balanced">Баланс — обычные текстуры, без теней</string>
+    <string name="gs_quality_beautiful">Красиво — все эффекты и тени, нужен мощный телефон</string>
     <string name="gs_smoothness">Плавность</string>
     <string name="gs_fps_30">Стабильно — ровные 30 кадров, телефон меньше греется</string>
     <string name="gs_fps_60">Плавно — до 60 кадров</string>

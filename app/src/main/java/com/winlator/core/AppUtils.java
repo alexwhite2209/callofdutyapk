@@ -64,6 +64,8 @@ public abstract class AppUtils {
         activity.overridePendingTransition(0, 0);
     }
 
+    public static final String EXTRA_RESTARTED = "restarted";
+
     public static void restartApplication(Context context) {
         restartApplication(context, null);
     }
@@ -71,6 +73,7 @@ public abstract class AppUtils {
     public static void restartApplication(Context context, RestartApplicationOptions options) {
         Intent intent = context.getPackageManager().getLaunchIntentForPackage(context.getPackageName());
         Intent mainIntent = Intent.makeRestartActivityTask(intent.getComponent());
+        mainIntent.putExtra(EXTRA_RESTARTED, true);
 
         if (options != null) {
             if (options.selectedMenuItemId > 0) mainIntent.putExtra("selected_menu_item_id", options.selectedMenuItemId);

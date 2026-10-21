@@ -1,7 +1,6 @@
 package com.winlator;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,8 +19,6 @@ import com.winlator.autosetup.AutoSetup;
 import com.winlator.autosetup.DeviceProfile;
 import com.winlator.autosetup.GameSettings;
 import com.winlator.container.Container;
-import com.winlator.container.ContainerManager;
-import com.winlator.container.Shortcut;
 import com.winlator.contentdialog.ContentDialog;
 import com.winlator.core.AppUtils;
 
@@ -68,7 +65,7 @@ public class GameSettingsFragment extends Fragment {
                 return;
             }
             readSettings(view).apply(context, this.container, profile);
-            launchGame(context);
+            if (!AutoSetup.launchGame(getActivity(), this.container, false)) ((MainActivity)getActivity()).showFragment(new ShortcutsFragment());
         });
 
         view.findViewById(R.id.BTAdvanced).setOnClickListener((v) ->
@@ -101,18 +98,5 @@ public class GameSettingsFragment extends Fragment {
         settings.showFPS = ((CheckBox)view.findViewById(R.id.CBShowFPS)).isChecked();
         settings.compatibleGraphics = ((CheckBox)view.findViewById(R.id.CBCompatibleGraphics)).isChecked();
         return settings;
-    }
-
-    private void launchGame(Context context) {
-        for (Shortcut shortcut : new ContainerManager(context).loadShortcuts(null)) {
-            if (shortcut.container.id == container.id && shortcut.name.equals(AutoSetup.CONTAINER_NAME)) {
-                Intent intent = new Intent(context, XServerDisplayActivity.class);
-                intent.putExtra("container_id", shortcut.container.id);
-                intent.putExtra("shortcut_path", shortcut.file.getPath());
-                startActivity(intent);
-                return;
-            }
-        }
-        ((MainActivity)getActivity()).showFragment(new ShortcutsFragment());
     }
 }

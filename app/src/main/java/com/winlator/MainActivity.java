@@ -46,6 +46,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private Callback<Uri> openFileCallback;
     private SharedPreferences preferences;
     private Fragment currentFragment;
+    private boolean directLaunch = false;
+    public static final String ACTION_GAME_SETTINGS = "com.winlator.GAME_SETTINGS";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +75,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         else {
             int selectedMenuItemId = intent.getIntExtra("selected_menu_item_id", 0);
-            int menuItemId = selectedMenuItemId > 0 ? selectedMenuItemId : R.id.menu_item_shortcuts;
+            boolean openGameSettings = ACTION_GAME_SETTINGS.equals(intent.getAction());
+            // Tapping the app icon goes straight into the game; restarts and the settings shortcut show the app
+            directLaunch = savedInstanceState == null && !openGameSettings && Intent.ACTION_MAIN.equals(intent.getAction()) &&
+                !intent.hasExtra(AppUtils.EXTRA_RESTARTED) && selectedMenuItemId == 0 && !intent.hasExtra("container_id");
+            int menuItemId = openGameSettings ? R.id.menu_item_game_settings : (selectedMenuItemId > 0 ? selectedMenuItemId : R.id.menu_item_shortcuts);
 
             actionBar.setHomeAsUpIndicator(R.drawable.icon_action_bar_menu);
             onNavigationItemSelected(navigationView.getMenu().findItem(menuItemId));
@@ -137,6 +143,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
         showFragment(new ShortcutsFragment());
+    }
+
+    public boolean isDirectLaunch() {
+        return directLaunch;
     }
 
     public void setOpenFileCallback(Callback<Uri> openFileCallback) {
