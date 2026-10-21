@@ -12,7 +12,8 @@
 /captures
 .externalNativeBuild
 .cxx
-local.properties*.apks
+local.properties
+*.apks
 *.aab
 bundletool-*.jar
 android-sdk/
