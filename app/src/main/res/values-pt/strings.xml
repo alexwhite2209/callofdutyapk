@@ -299,7 +299,10 @@
     <string name="enable_background_wakelock">Ativar wakelock quando o dispositivo está bloqueado</string>
     <string name="save_mem_on_run_from_steam">Economize memória ao executar a partir do Steam</string>
     <string name="present_mode">Modo de Apresentação</string>
-    <string name="cod4_game_not_found">Игра Call of Duty 4 не найдена.\n\nСкопируйте папку игры (с файлом iw3sp.exe) в «Загрузки/CoD4» или положите в «Загрузки» архив Call_of_Duty_4_Modern_Warfare.zip, затем перезапустите приложение.</string>
+    <string name="cod4_game_not_found">Игра Call of Duty 4 не найдена.
+
+Нажмите «Выбрать архив» и укажите файл Call_of_Duty_4_Modern_Warfare.zip в любой папке телефона — приложение само всё распакует и настроит. Понадобится около 8 ГБ свободного места.</string>
+    <string name="cod4_pick_archive">Выбрать архив</string>
     <string name="cod4_extracting">Распаковка Call of Duty 4…</string>
     <string name="cod4_extract_failed">Не удалось распаковать архив с игрой. Проверьте свободное место (нужно ~8 ГБ) или распакуйте архив в «Загрузки/CoD4» вручную.</string>
     <string name="cod4_ready">CoD4 настроена под ваш телефон</string>

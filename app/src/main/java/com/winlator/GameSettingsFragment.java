@@ -52,7 +52,7 @@ public class GameSettingsFragment extends Fragment {
         markRecommended(view.findViewById(profile.getRecommendedFPS() == 30 ? R.id.RBFPS30 : R.id.RBFPS60));
 
         if (this.container == null) {
-            ContentDialog.alert(context, R.string.cod4_game_not_found, null);
+            AutoSetup.showGameNotFoundDialog((MainActivity)getActivity());
             showSettings(view, GameSettings.recommended(profile));
         }
         else showSettings(view, GameSettings.load(this.container, profile));
@@ -64,8 +64,7 @@ public class GameSettingsFragment extends Fragment {
 
         view.findViewById(R.id.BTPlay).setOnClickListener((v) -> {
             if (this.container == null) {
-                AutoSetup.reset(context);
-                AutoSetup.run((MainActivity)getActivity());
+                AutoSetup.showGameNotFoundDialog((MainActivity)getActivity());
                 return;
             }
             readSettings(view).apply(context, this.container, profile);
