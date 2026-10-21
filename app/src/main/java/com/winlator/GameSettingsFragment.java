@@ -1,6 +1,9 @@
 package com.winlator;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +21,7 @@ import androidx.fragment.app.Fragment;
 import com.winlator.autosetup.AutoSetup;
 import com.winlator.autosetup.DeviceProfile;
 import com.winlator.autosetup.GameSettings;
+import com.winlator.autosetup.ProblemReport;
 import com.winlator.container.Container;
 import com.winlator.contentdialog.ContentDialog;
 import com.winlator.core.AppUtils;
@@ -69,6 +73,18 @@ public class GameSettingsFragment extends Fragment {
             if (!AutoSetup.launchGame(getActivity(), this.container, false)) ((MainActivity)getActivity()).showFragment(new ShortcutsFragment());
         });
 
+        view.findViewById(R.id.BTReport).setOnClickListener((v) -> {
+            String report = ProblemReport.build(context, this.container);
+            ClipboardManager clipboard = (ClipboardManager)context.getSystemService(Context.CLIPBOARD_SERVICE);
+            clipboard.setPrimaryClip(ClipData.newPlainText("CoD4 report", report));
+            AppUtils.showToast(context, R.string.gs_report_copied);
+
+            Intent intent = new Intent(Intent.ACTION_SEND);
+            intent.setType("text/plain");
+            intent.putExtra(Intent.EXTRA_TEXT, report);
+            startActivity(Intent.createChooser(intent, getString(R.string.gs_report)));
+        });
+
         view.findViewById(R.id.BTAdvanced).setOnClickListener((v) ->
             ContentDialog.confirm(context, R.string.gs_advanced_warning, () -> ((MainActivity)getActivity()).showFragment(new ContainersFragment())));
         return view;
@@ -86,6 +102,7 @@ public class GameSettingsFragment extends Fragment {
         ((CheckBox)view.findViewById(R.id.CBFewerCrashes)).setChecked(settings.fewerCrashes);
         ((CheckBox)view.findViewById(R.id.CBShowFPS)).setChecked(settings.showFPS);
         ((RadioGroup)view.findViewById(R.id.RGGraphics)).check(GRAPHICS_VARIANT_IDS[settings.graphicsVariant]);
+        ((CheckBox)view.findViewById(R.id.CBSkipVideos)).setChecked(settings.skipVideos);
     }
 
     private GameSettings readSettings(View view) {
@@ -97,6 +114,7 @@ public class GameSettingsFragment extends Fragment {
         settings.fullscreen = ((CheckBox)view.findViewById(R.id.CBFullscreen)).isChecked();
         settings.fewerCrashes = ((CheckBox)view.findViewById(R.id.CBFewerCrashes)).isChecked();
         settings.showFPS = ((CheckBox)view.findViewById(R.id.CBShowFPS)).isChecked();
+        settings.skipVideos = ((CheckBox)view.findViewById(R.id.CBSkipVideos)).isChecked();
         int graphicsId = ((RadioGroup)view.findViewById(R.id.RGGraphics)).getCheckedRadioButtonId();
         for (int i = 0; i < GRAPHICS_VARIANT_IDS.length; i++) if (GRAPHICS_VARIANT_IDS[i] == graphicsId) settings.graphicsVariant = i;
         return settings;

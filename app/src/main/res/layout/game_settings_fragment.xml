@@ -122,6 +122,13 @@
                     android:text="@string/gs_fewer_crashes" />
 
                 <CheckBox
+                    android:id="@+id/CBSkipVideos"
+                    style="@style/CheckBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/gs_skip_videos" />
+
+                <CheckBox
                     android:id="@+id/CBShowFPS"
                     style="@style/CheckBox"
                     android:layout_width="match_parent"
@@ -200,6 +207,14 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="@string/gs_auto" />
+
+        <Button
+            android:id="@+id/BTReport"
+            style="@style/ButtonNeutral"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/gs_report" />
 
         <Button
             android:id="@+id/BTAdvanced"

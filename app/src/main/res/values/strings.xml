@@ -384,6 +384,9 @@
     <string name="gs_graphics_2">Вариант 2 — другая версия графики</string>
     <string name="gs_graphics_3">Вариант 3 — родной драйвер телефона</string>
     <string name="gs_graphics_4">Вариант 4 — совместимый (медленнее)</string>
+    <string name="gs_skip_videos">Пропускать видеоролики (если вместо ролика чёрный экран)</string>
+    <string name="gs_report">Отчёт об ошибке</string>
+    <string name="gs_report_copied">Отчёт скопирован. Вставьте его в чат с Claude.</string>
     <string name="gs_show_fps">Показывать счётчик кадров</string>
     <string name="gs_save_and_play">Сохранить и играть</string>
     <string name="gs_auto">Подобрать автоматически</string>

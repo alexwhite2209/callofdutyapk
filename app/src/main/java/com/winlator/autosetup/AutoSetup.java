@@ -189,6 +189,14 @@ public abstract class AutoSetup {
         return id > 0 ? new ContainerManager(context).getContainerById(id) : null;
     }
 
+    /** Game folder on the phone for a shortcut created by toDOSPath() (drive D: is Downloads). */
+    public static File getGameDir(Shortcut shortcut) {
+        String path = shortcut.path;
+        if (path == null || !path.toUpperCase().startsWith("D:\\")) return null;
+        File exe = new File(AppUtils.DIRECTORY_DOWNLOADS, path.substring(3).replace("\\", "/"));
+        return exe.getParentFile();
+    }
+
     /** Starts the single player shortcut; direct launch means the emulator UI is skipped and closes with the game. */
     public static boolean launchGame(Activity activity, Container container, boolean directLaunch) {
         for (Shortcut shortcut : new ContainerManager(activity).loadShortcuts(null)) {
