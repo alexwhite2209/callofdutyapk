@@ -47,6 +47,6 @@ KS=$ROOT/cod4.keystore
 
 java -cp "$BT/libs/*" com.android.tools.build.bundletool.BundleToolMain build-apks \
   --aapt2="$(ls -d "$ANDROID_HOME"/build-tools/*/ | tail -1)aapt2" \
-  --bundle="$AAB" --output="$ROOT/CoD4-Winlator.apks" --overwrite \
+  --mode=universal --bundle="$AAB" --output="$ROOT/CoD4-Winlator.apks" --overwrite \
   --ks="$KS" --ks-pass=pass:android --ks-key-alias=cod4 --key-pass=pass:android
 echo "Готово: $ROOT/CoD4-Winlator.apks"
