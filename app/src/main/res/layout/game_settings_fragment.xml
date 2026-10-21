@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout style="@style/FieldSet">
+                <TextView
+                    android:id="@+id/TVDeviceInfo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:lineSpacingExtra="2dp" />
+            </LinearLayout>
+
+            <TextView
+                style="@style/FieldSetLabel"
+                android:text="@string/gs_your_phone" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout style="@style/FieldSet">
+                <RadioGroup
+                    android:id="@+id/RGQuality"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <RadioButton
+                        android:id="@+id/RBQualityFast"
+                        style="@style/RadioButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/gs_quality_fast" />
+
+                    <RadioButton
+                        android:id="@+id/RBQualityBalanced"
+                        style="@style/RadioButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/gs_quality_balanced" />
+
+                    <RadioButton
+                        android:id="@+id/RBQualityBeautiful"
+                        style="@style/RadioButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/gs_quality_beautiful" />
+                </RadioGroup>
+            </LinearLayout>
+
+            <TextView
+                style="@style/FieldSetLabel"
+                android:text="@string/gs_quality" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout style="@style/FieldSet">
+                <RadioGroup
+                    android:id="@+id/RGFPS"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <RadioButton
+                        android:id="@+id/RBFPS30"
+                        style="@style/RadioButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/gs_fps_30" />
+
+                    <RadioButton
+                        android:id="@+id/RBFPS60"
+                        style="@style/RadioButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/gs_fps_60" />
+                </RadioGroup>
+            </LinearLayout>
+
+            <TextView
+                style="@style/FieldSetLabel"
+                android:text="@string/gs_smoothness" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout style="@style/FieldSet">
+                <CheckBox
+                    android:id="@+id/CBTouchControls"
+                    style="@style/CheckBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/gs_touch_controls" />
+
+                <CheckBox
+                    android:id="@+id/CBFullscreen"
+                    style="@style/CheckBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/gs_fullscreen" />
+
+                <CheckBox
+                    android:id="@+id/CBFewerCrashes"
+                    style="@style/CheckBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/gs_fewer_crashes" />
+
+                <CheckBox
+                    android:id="@+id/CBShowFPS"
+                    style="@style/CheckBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/gs_show_fps" />
+            </LinearLayout>
+
+            <TextView
+                style="@style/FieldSetLabel"
+                android:text="@string/gs_extra" />
+        </FrameLayout>
+
+        <Button
+            android:id="@+id/BTPlay"
+            style="@style/ButtonPositive"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/gs_save_and_play" />
+
+        <Button
+            android:id="@+id/BTAuto"
+            style="@style/ButtonNeutral"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/gs_auto" />
+
+        <Button
+            android:id="@+id/BTAdvanced"
+            style="@style/ButtonNeutral"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="@string/gs_advanced" />
+    </LinearLayout>
+</ScrollView>
