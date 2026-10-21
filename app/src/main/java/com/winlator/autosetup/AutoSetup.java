@@ -57,6 +57,10 @@ public abstract class AutoSetup {
         final ContainerManager manager = new ContainerManager(activity);
         Container existing = manager.getContainerById(preferences.getInt(PREF_CONTAINER_ID, 0));
         if (existing != null) {
+            if (!existing.getExtra("gsVersion").equals(GameSettings.VERSION)) {
+                DeviceProfile profile = DeviceProfile.detect(activity);
+                GameSettings.load(existing, profile).apply(activity, existing, profile);
+            }
             running.set(false);
             return;
         }

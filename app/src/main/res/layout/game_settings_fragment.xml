@@ -122,6 +122,13 @@
                     android:text="@string/gs_fewer_crashes" />
 
                 <CheckBox
+                    android:id="@+id/CBCompatibleGraphics"
+                    style="@style/CheckBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/gs_compatible_graphics" />
+
+                <CheckBox
                     android:id="@+id/CBShowFPS"
                     style="@style/CheckBox"
                     android:layout_width="match_parent"

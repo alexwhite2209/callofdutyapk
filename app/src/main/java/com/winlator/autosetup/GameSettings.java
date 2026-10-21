@@ -19,6 +19,8 @@ public class GameSettings {
     public static final int QUALITY_BALANCED = 1;
     public static final int QUALITY_BEAUTIFUL = 2;
     public static final int TOUCH_CONTROLS_PROFILE_ID = 4; // built-in "FPS" profile
+    /** Bump when the mapping to emulator options changes, so existing installs get re-applied on update. */
+    public static final String VERSION = "2";
 
     public int quality;
     public int fps;
@@ -26,6 +28,7 @@ public class GameSettings {
     public boolean fullscreen;
     public boolean showFPS;
     public boolean touchControls;
+    public boolean compatibleGraphics;
 
     public static GameSettings recommended(DeviceProfile profile) {
         GameSettings settings = new GameSettings();
@@ -47,36 +50,53 @@ public class GameSettings {
         settings.fullscreen = container.getExtra("gsFullscreen", "1").equals("1");
         settings.showFPS = container.getExtra("gsShowFPS").equals("1");
         settings.touchControls = container.getExtra("gsTouchControls", "1").equals("1");
+        settings.compatibleGraphics = container.getExtra("gsCompatibleGraphics").equals("1");
         return settings;
     }
 
     public void apply(Context context, Container container, DeviceProfile profile) {
-        container.setScreenSize(profile.getScreenSize(quality));
+        String screenSize = profile.getScreenSize(quality);
+        container.setScreenSize(screenSize);
         container.setGraphicsDriver(profile.getGraphicsDriver());
-        container.setDXWrapper(DXWrappers.DXVK);
 
-        KeyValueSet dxvkConfig = new KeyValueSet();
-        dxvkConfig.put("version", profile.getDXVKVersion());
-        dxvkConfig.put("framerate", String.valueOf(fps));
-        dxvkConfig.put("maxDeviceMemory", profile.getVideoMemory());
-        container.setDXWrapperConfig(dxvkConfig.toString());
+        if (compatibleGraphics) {
+            // WineD3D renders through OpenGL; slower, but works when DXVK shows a black screen
+            container.setDXWrapper(DXWrappers.WINED3D);
+            container.setDXWrapperConfig("");
+        }
+        else {
+            container.setDXWrapper(DXWrappers.DXVK);
+            KeyValueSet dxvkConfig = new KeyValueSet();
+            dxvkConfig.put("version", profile.getDXVKVersion());
+            dxvkConfig.put("framerate", String.valueOf(fps));
+            dxvkConfig.put("maxDeviceMemory", profile.getVideoMemory());
+            container.setDXWrapperConfig(dxvkConfig.toString());
+        }
 
         container.setBox64Preset(fewerCrashes ? Box64Preset.STABILITY : Box64Preset.PERFORMANCE);
         container.setHUDMode((byte)(showFPS ? FrameRating.Mode.SIMPLE : FrameRating.Mode.DISABLED).ordinal());
 
+        container.putExtra("gsVersion", VERSION);
         container.putExtra("gsQuality", String.valueOf(quality));
         container.putExtra("gsFPS", String.valueOf(fps));
         container.putExtra("gsFewerCrashes", fewerCrashes ? "1" : "0");
         container.putExtra("gsFullscreen", fullscreen ? "1" : "0");
         container.putExtra("gsShowFPS", showFPS ? "1" : "0");
         container.putExtra("gsTouchControls", touchControls ? "1" : "0");
+        container.putExtra("gsCompatibleGraphics", compatibleGraphics ? "1" : "0");
         container.saveData();
 
         for (Shortcut shortcut : new ContainerManager(context).loadShortcuts(null)) {
             if (shortcut.container.id != container.id || shortcut.file.isDirectory()) continue;
             shortcut.putExtra("forceFullscreen", fullscreen ? "1" : null);
             shortcut.putExtra("controlsProfile", touchControls ? String.valueOf(TOUCH_CONTROLS_PROFILE_ID) : null);
+            shortcut.putExtra("execArgs", getLaunchArgs(screenSize));
             shortcut.saveData();
         }
+    }
+
+    /** Forces the game video mode to match the Wine desktop, otherwise the menu can stay black after the intro. */
+    private String getLaunchArgs(String screenSize) {
+        return "+set r_fullscreen 1 +set r_mode "+screenSize+" +set r_displayRefresh 60 +set r_aaSamples 1 +set r_vsync 0 +set com_maxfps "+fps;
     }
 }

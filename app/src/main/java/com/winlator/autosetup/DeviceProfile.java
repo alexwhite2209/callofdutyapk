@@ -73,17 +73,13 @@ public class DeviceProfile {
         return tier == Tier.LOW ? 30 : 60;
     }
 
-    /** Width follows the phone aspect ratio so the picture fills the screen without black bars. */
+    /** Standard 16:9 modes only: CoD4 shows a black menu when the desktop has a resolution it does not list. */
     public String getScreenSize(int quality) {
-        int height;
         switch (quality) {
-            case GameSettings.QUALITY_BEAUTIFUL: height = 720; break;
-            case GameSettings.QUALITY_BALANCED: height = 600; break;
-            default: height = 540; break;
+            case GameSettings.QUALITY_BEAUTIFUL: return "1280x720";
+            case GameSettings.QUALITY_BALANCED: return "1024x576";
+            default: return "960x540";
         }
-        float aspect = displayHeight > 0 ? (float)displayWidth / displayHeight : 16.0f / 9.0f;
-        int width = Math.round(height * aspect / 8.0f) * 8;
-        return width+"x"+height;
     }
 
     public String getVulkanDriver() {

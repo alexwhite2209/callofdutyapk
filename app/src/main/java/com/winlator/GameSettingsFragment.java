@@ -87,6 +87,7 @@ public class GameSettingsFragment extends Fragment {
         ((CheckBox)view.findViewById(R.id.CBFullscreen)).setChecked(settings.fullscreen);
         ((CheckBox)view.findViewById(R.id.CBFewerCrashes)).setChecked(settings.fewerCrashes);
         ((CheckBox)view.findViewById(R.id.CBShowFPS)).setChecked(settings.showFPS);
+        ((CheckBox)view.findViewById(R.id.CBCompatibleGraphics)).setChecked(settings.compatibleGraphics);
     }
 
     private GameSettings readSettings(View view) {
@@ -98,6 +99,7 @@ public class GameSettingsFragment extends Fragment {
         settings.fullscreen = ((CheckBox)view.findViewById(R.id.CBFullscreen)).isChecked();
         settings.fewerCrashes = ((CheckBox)view.findViewById(R.id.CBFewerCrashes)).isChecked();
         settings.showFPS = ((CheckBox)view.findViewById(R.id.CBShowFPS)).isChecked();
+        settings.compatibleGraphics = ((CheckBox)view.findViewById(R.id.CBCompatibleGraphics)).isChecked();
         return settings;
     }
 
